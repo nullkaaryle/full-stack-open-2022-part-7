@@ -1,8 +1,4 @@
 const Notification = ({ notification }) => {
-  if (notification.message === null) {
-    return null
-  }
-
   const style = {
     color: notification.type === 'alert' ? 'red' : 'green',
     background: 'lightgrey',
@@ -11,6 +7,10 @@ const Notification = ({ notification }) => {
     borderRadius: 5,
     padding: 10,
     marginBottom: 10
+  }
+
+  if (notification.message === null) {
+    return null
   }
 
   return (

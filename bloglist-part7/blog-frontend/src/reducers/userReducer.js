@@ -16,8 +16,8 @@ export const { setUser } = userSlice.actions
 
 export const initializeUser = () => {
   return async (dispatch) => {
-    const user = await userService.getUser()
-    dispatch(setUser(user))
+    const userFromStorage = await userService.getUser()
+    dispatch(setUser(userFromStorage))
   }
 }
 
@@ -35,5 +35,4 @@ export const logoutUser = () => {
   }
 }
 
-userService.clearUser()
 export default userSlice.reducer
