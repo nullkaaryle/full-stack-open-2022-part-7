@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import Blog from './components/Blog'
@@ -7,10 +7,10 @@ import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
-import loginService from './services/login'
-import userService from './services/user'
+import loginService from './services/loginService'
 
 import { createNotification } from './reducers/notificationReducer'
+import { loginUser, logoutUser, initializeUser } from './reducers/userReducer'
 import {
   addBlog,
   deleteBlog,
@@ -21,14 +21,24 @@ import {
 const App = () => {
   const dispatch = useDispatch()
 
-  const [user, setUser] = useState(null)
-
   useEffect(() => {
     dispatch(initializeBlogs())
   }, [dispatch])
 
+  useEffect(() => {
+    dispatch(initializeUser())
+  }, [dispatch])
+
   const blogs = useSelector(({ blogs }) => {
     return blogs
+  })
+
+  const user = useSelector(({ user }) => {
+    return user
+  })
+
+  const notification = useSelector(({ notification }) => {
+    return notification
   })
 
   const byLikesAndTitles = (a, b) =>
@@ -36,18 +46,7 @@ const App = () => {
 
   const sortedBlogs = [...blogs].sort(byLikesAndTitles)
 
-  const notification = useSelector(({ notification }) => {
-    return notification
-  })
-
   const blogFormRef = useRef()
-
-  useEffect(() => {
-    const userFromStorage = userService.getUser()
-    if (userFromStorage) {
-      setUser(userFromStorage)
-    }
-  }, [])
 
   const login = async (username, password) => {
     loginService
@@ -56,8 +55,7 @@ const App = () => {
         password
       })
       .then((user) => {
-        setUser(user)
-        userService.setUser(user)
+        dispatch(loginUser(user))
         notify(`${user.name} logged in!`)
       })
       .catch(() => {
@@ -66,8 +64,7 @@ const App = () => {
   }
 
   const logout = () => {
-    setUser(null)
-    userService.clearUser()
+    dispatch(logoutUser())
     notify('good bye!')
   }
 
