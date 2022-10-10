@@ -6,6 +6,11 @@ const getAll = () => {
   return request.then((response) => response.data)
 }
 
-const usersService = { getAll }
+const getOne = (id) => {
+  const request = axios.get(baseUrl + '/' + id + '')
+  return request.then((response) => response.data)
+}
+
+const usersService = { getAll, getOne }
 
 export default usersService

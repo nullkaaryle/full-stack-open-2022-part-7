@@ -1,9 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
 
 import Userlist from './Userlist'
+import User from './User'
 import Blogview from './Blogview'
 import { logoutUser } from '../reducers/userReducer'
+import { initializeUsers } from '../reducers/usersReducer'
 
 const Blogs = ({ user, notify, notification }) => {
   const dispatch = useDispatch()
@@ -19,6 +22,14 @@ const Blogs = ({ user, notify, notification }) => {
       <button onClick={logout}>logout</button>
     </div>
   )
+
+  useEffect(() => {
+    dispatch(initializeUsers())
+  }, [dispatch])
+
+  const users = useSelector(({ users }) => {
+    return users
+  })
 
   const padding = {
     padding: 5
@@ -44,7 +55,8 @@ const Blogs = ({ user, notify, notification }) => {
             <Blogview notify={notify} notification={notification} user={user} />
           }
         />
-        <Route path="/users" element={<Userlist />} />
+        <Route path="/users" element={<Userlist users={users} />} />
+        <Route path="/users/:id" element={<User users={users} />} />
       </Routes>
     </Router>
   )
