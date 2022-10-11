@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link, Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 
@@ -12,6 +12,7 @@ import { initializeUsers } from '../reducers/usersReducer'
 import {
   initializeBlogs,
   addLikeToBlog,
+  addCommentToBlog,
   deleteBlog
 } from '../reducers/blogReducer'
 
@@ -60,6 +61,23 @@ const Blogs = ({ user, notify, notification }) => {
     })
   }
 
+  const commentBlog = async ({ id, comment }) => {
+    const blog = blogs.find((b) => b.id === id)
+    const updatedCommentlist = blog.comments.concat(comment)
+
+    const commentedBlog = {
+      ...blog,
+      comments: updatedCommentlist,
+      user: blog.user.id
+    }
+
+    dispatch(addCommentToBlog(commentedBlog)).then(() => {
+      notify(
+        `you added comment ${comment}' to '${commentedBlog.title}' by ${commentedBlog.author}`
+      )
+    })
+  }
+
   const removeBlog = (id) => {
     const toRemove = blogs.find((b) => b.id === id)
 
@@ -94,21 +112,8 @@ const Blogs = ({ user, notify, notification }) => {
       <div> {showLoggedUser()}</div>
 
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Blogview
-              blogs={blogs}
-              notify={notify}
-              notification={notification}
-              user={user}
-              likeBlog={likeBlog}
-              removeBlog={removeBlog}
-            />
-          }
-        />
-        <Route path="/users/" element={<Userlist users={users} />} />
-        <Route path="/users/:id" element={<User users={users} />} />
+        <Route path="/" element={<Blogview blogs={blogs} notify={notify} />} />
+        <Route path="/blogs/" element={<Navigate to="/" replace />} />
         <Route
           path="/blogs/:id"
           element={
@@ -116,10 +121,13 @@ const Blogs = ({ user, notify, notification }) => {
               blogs={blogs}
               likeBlog={likeBlog}
               removeBlog={removeBlog}
+              commentBlog={commentBlog}
               user={user}
             />
           }
         />
+        <Route path="/users/" element={<Userlist users={users} />} />
+        <Route path="/users/:id" element={<User users={users} />} />
       </Routes>
     </div>
   )

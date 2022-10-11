@@ -26,10 +26,15 @@ const update = (id, newObject) => {
   return request.then((response) => response.data)
 }
 
+const createComment = (id, newObject) => {
+  const request = axios.post(`${baseUrl}/${id}/comments`, newObject)
+  return request.then((response) => response.data)
+}
+
 const remove = (id) => {
   return axios.delete(`${baseUrl}/${id}`, config())
 }
 
-const blogService = { getAll, create, update, remove }
+const blogService = { getAll, create, createComment, update, remove }
 
 export default blogService

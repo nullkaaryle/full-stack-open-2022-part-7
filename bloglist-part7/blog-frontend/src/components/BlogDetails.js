@@ -1,8 +1,15 @@
 import { useParams, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
-const BlogButtons = ({ blog, likeBlog, removeBlog, own }) => {
+const BlogButtons = ({ blog, likeBlog, removeBlog, commentBlog, own }) => {
   const navigate = useNavigate()
+  const [comment, setComment] = useState('')
 
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    commentBlog({ id: blog.id, comment })
+    setComment('')
+  }
   return (
     <div>
       <div>
@@ -15,11 +22,25 @@ const BlogButtons = ({ blog, likeBlog, removeBlog, own }) => {
           </button>
         )}
       </div>
+
+      <form onSubmit={handleSubmit}>
+        <div>
+          <input
+            value={comment}
+            onChange={({ target }) => setComment(target.value)}
+            id="comment"
+            placeholder="your comment of the blog"
+          />
+        </div>
+        <button id="create-comment" type="submit">
+          add comment
+        </button>
+      </form>
     </div>
   )
 }
 
-const BlogDetails = ({ blogs, likeBlog, removeBlog, user }) => {
+const BlogDetails = ({ blogs, likeBlog, removeBlog, commentBlog, user }) => {
   const id = useParams().id
   const blog = blogs.find((n) => n.id === id)
   const addedBy = blog.user && blog.user.name ? blog.user.name : 'anonymous'
@@ -45,10 +66,21 @@ const BlogDetails = ({ blogs, likeBlog, removeBlog, user }) => {
       <p>
         blog was added by: <b>{addedBy}</b>
       </p>
+      <p>
+        blog comments:
+        <ul>
+          {blog.comments.map((comment) => (
+            <li key={comment}>
+              <b> {comment} </b>
+            </li>
+          ))}
+        </ul>
+      </p>
       <BlogButtons
         blog={blog}
         likeBlog={likeBlog}
         removeBlog={removeBlog}
+        commentBlog={commentBlog}
         own={own}
       />
     </div>
