@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 
 const Userlist = ({ users }) => {
   const countBlogs = (user) => {
@@ -9,13 +10,11 @@ const Userlist = ({ users }) => {
     <div>
       <h2>USERS</h2>
 
-      <table>
+      <Table striped="true">
         <tbody>
           <tr>
             <td></td>
-            <td>
-              <b>blogs created</b>
-            </td>
+            <td>blogs created</td>
           </tr>
 
           {users.map((user) => (
@@ -27,7 +26,7 @@ const Userlist = ({ users }) => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   )
 }

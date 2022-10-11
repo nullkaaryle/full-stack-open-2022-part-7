@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { Table, Button } from 'react-bootstrap'
 
 const BlogButtons = ({ blog, likeBlog, removeBlog, commentBlog, own }) => {
   const navigate = useNavigate()
@@ -13,13 +14,13 @@ const BlogButtons = ({ blog, likeBlog, removeBlog, commentBlog, own }) => {
   return (
     <div>
       <div>
-        <button onClick={() => likeBlog(blog.id)}>like this blog</button>
+        <Button onClick={() => likeBlog(blog.id)}>like this blog</Button>
       </div>
       <div>
         {own && (
-          <button onClick={() => navigate('/') || removeBlog(blog.id)}>
+          <Button onClick={() => navigate('/') || removeBlog(blog.id)}>
             remove this blog
-          </button>
+          </Button>
         )}
       </div>
 
@@ -29,12 +30,12 @@ const BlogButtons = ({ blog, likeBlog, removeBlog, commentBlog, own }) => {
             value={comment}
             onChange={({ target }) => setComment(target.value)}
             id="comment"
-            placeholder="your comment of the blog"
+            placeholder="add your comment"
           />
         </div>
-        <button id="create-comment" type="submit">
+        <Button id="create-comment" type="submit">
           add comment
-        </button>
+        </Button>
       </form>
     </div>
   )
@@ -53,29 +54,37 @@ const BlogDetails = ({ blogs, likeBlog, removeBlog, commentBlog, user }) => {
   return (
     <div>
       <h3>{blog.title}</h3>
-      <p>
-        <b>blog author:</b> {blog.author}
-      </p>
-      <div>
-        <b> blog url:</b>
-        <a href={blog.url}>{blog.url}</a>
-      </div>
-      <p>
-        blog has <b>{blog.likes}</b> likes
-      </p>
-      <p>
-        blog was added by: <b>{addedBy}</b>
-      </p>
-      <p>
-        blog comments:
-        <ul>
-          {blog.comments.map((comment) => (
-            <li key={comment}>
-              <b> {comment} </b>
-            </li>
-          ))}
-        </ul>
-      </p>
+      <Table>
+        <tbody>
+          <tr>
+            blog author: <b>{blog.author}</b>
+          </tr>
+          <tr>
+            blog url:
+            <a href={blog.url}>
+              <b>{blog.url}</b>
+            </a>
+          </tr>
+          <tr>
+            blog has <b>{blog.likes}</b> likes
+          </tr>
+          <tr>
+            blog was added by:<b>{addedBy}</b>
+          </tr>
+          <tr>
+            blog comments:
+            {blog.comments.length === 0 ? (
+              ' no comments added yet'
+            ) : (
+              <ul>
+                {blog.comments.map((comment) => (
+                  <li key={comment}>{comment}</li>
+                ))}
+              </ul>
+            )}
+          </tr>
+        </tbody>
+      </Table>
       <BlogButtons
         blog={blog}
         likeBlog={likeBlog}

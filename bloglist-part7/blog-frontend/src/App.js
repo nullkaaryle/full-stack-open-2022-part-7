@@ -63,7 +63,7 @@ const App = () => {
 
   return (
     <Router>
-      <div>
+      <div className="container">
         <Notification notification={notification} />
         {user === null ? loginView() : blogAppView()}
       </div>

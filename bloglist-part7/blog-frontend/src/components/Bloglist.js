@@ -1,4 +1,5 @@
 import Blog from './Blog'
+import { Table } from 'react-bootstrap'
 
 const Bloglist = ({ blogs }) => {
   const byLikesAndTitles = (a, b) =>
@@ -8,11 +9,16 @@ const Bloglist = ({ blogs }) => {
 
   return (
     <div>
-      <div id="blogs">
-        {sortedBlogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
-        ))}
-      </div>
+      ALL BLOGS
+      <Table striped="true">
+        <tbody>
+          {sortedBlogs.map((blog) => (
+            <tr key={blog.id}>
+              <Blog key={blog.id} blog={blog} />
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
   )
 }

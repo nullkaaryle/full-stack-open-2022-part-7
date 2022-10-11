@@ -1,6 +1,7 @@
 import { Routes, Route, Link, Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
+import { Navbar, Nav, Button } from 'react-bootstrap'
 
 import Userlist from './Userlist'
 import User from './User'
@@ -27,7 +28,7 @@ const Blogs = ({ user, notify, notification }) => {
   const showLoggedUser = () => (
     <div>
       {user.name} logged in
-      <button onClick={logout}>logout</button>
+      <Button onClick={logout}>logout</Button>
     </div>
   )
 
@@ -100,16 +101,24 @@ const Blogs = ({ user, notify, notification }) => {
 
   return (
     <div>
-      <div>
-        <Link style={padding} to="/">
-          BLOGS
-        </Link>
-        <Link style={padding} to="/users">
-          USERS
-        </Link>
-      </div>
-
-      <div> {showLoggedUser()}</div>
+      <Navbar collapseOnSelect expand="lg">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/">
+                BLOGS
+              </Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/users">
+                USERS
+              </Link>
+            </Nav.Link>
+            <div> {showLoggedUser()}</div>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
 
       <Routes>
         <Route path="/" element={<Blogview blogs={blogs} notify={notify} />} />
