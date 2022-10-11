@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 import Blogs from './components/Blogs'
 import { initializeUser } from './reducers/userReducer'
@@ -61,10 +62,12 @@ const App = () => {
   }
 
   return (
-    <div>
-      <Notification notification={notification} />
-      {user === null ? loginView() : blogAppView()}
-    </div>
+    <Router>
+      <div>
+        <Notification notification={notification} />
+        {user === null ? loginView() : blogAppView()}
+      </div>
+    </Router>
   )
 }
 

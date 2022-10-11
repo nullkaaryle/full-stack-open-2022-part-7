@@ -1,12 +1,17 @@
 import Bloglist from './Bloglist'
 import NewBlog from './NewBlog'
 
-const Blogview = ({ notify, user }) => {
+const Blogview = ({ blogs, notify, user, likeBlog, removeBlog }) => {
   return (
     <div>
       <h2>BLOGS</h2>
       <NewBlog notify={notify} />
-      <Bloglist user={user} notify={notify} />
+      <Bloglist
+        blogs={blogs}
+        user={user}
+        likeBlog={likeBlog}
+        removeBlog={removeBlog}
+      />
     </div>
   )
 }
